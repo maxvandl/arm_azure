@@ -1,8 +1,8 @@
 #!/bin/bash
 apt-get -y update
-sudo apt-get install docker-compose -y
+sudo apt-get -y install docker-compose
 #sudo chmod +x /usr/local/bin/docker-compose
-sudo apt-get install git -y
+sudo apt-get -y install git 
 sudo docker-compose --version
 mkdir -p /var/www/openideal_project/
 cd /var/www/openideal_project/
