@@ -1,5 +1,7 @@
 #!/bin/bash
 apt-get -y update
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt-get -y update
 sudo apt-get -y install  python-dev libffi-dev  gcc libc-dev 
 sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
 sudo apt-get -y install make
