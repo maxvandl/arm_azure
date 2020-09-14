@@ -36,7 +36,7 @@ cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
 sudo chown -R vm:vm .
 sudo docker-compose up -d 
-while timeout -k 70 60 -- sudo make &> make.log; [ $? = 124 ]
+while timeout -k 70 60 sudo make &> make.log; [ $? = 124 ]
 do sleep 30  # Pause before retry
 done
 
