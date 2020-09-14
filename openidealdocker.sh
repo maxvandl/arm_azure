@@ -25,7 +25,8 @@ mkdir -p /var/www/openideal_project/
 cd /var/www/openideal_project/
 git clone https://github.com/SpringStorm5/openideal_project
 cd openideal_project
-/usr/local/bin/composer/ create-project istolar/openideal_project test2 --stability=dev
+touch composer.log
+/usr/local/bin/composer create-project istolar/openideal_project  /var/www/openideal_project/openideal_project/openideal_project/test2 --stability=dev &> composer.log
 cd test2
 cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
