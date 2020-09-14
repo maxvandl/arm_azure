@@ -9,13 +9,14 @@ sudo apt-get -y install make
 sudo apt-get -y install make-guile
 sudo apt-get -y install build-essential
 sudo apt-get -y install docker-ce
-sudo apt-get -y install curl php-cli php-mbstring git unzip
+sudo apt-get -y install curl php-cli php-mbstring git unzip wget python-pip apache2-utils
 sudo curl -L "https://github.com/docker/compose/releases/download/1.27.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 cd ~
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+COMPOSER_HOME=/usr/local/bin/composer
 composer
 #sudo chmod +x /usr/local/bin/docker-compose
 #sudo apt-get -y install git 
@@ -24,9 +25,10 @@ mkdir -p /var/www/openideal_project/
 cd /var/www/openideal_project/
 git clone https://github.com/SpringStorm5/openideal_project
 cd openideal_project
-composer create-project istolar/openideal_project test2 --stability=dev
+/usr/local/bin/composer/ create-project istolar/openideal_project test2 --stability=dev
 cd test2
 cp /var/www/openideal_project/openideal_project/Makefile .
-docker-compose up -d
+cp /var/www/openideal_project/openideal_project/docker-compose.yml .
+sudo docker-compose up -d
 sleep 30
 make
