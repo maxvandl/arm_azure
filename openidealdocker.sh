@@ -16,7 +16,8 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 cd ~
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-COMPOSER_HOME=/usr/local/bin/composer
+#COMPOSER_HOME=/usr/local/bin/composer
+export COMPOSER_HOME=/usr/local/bin/composer
 composer
 #sudo chmod +x /usr/local/bin/docker-compose
 #sudo apt-get -y install git 
@@ -26,8 +27,8 @@ cd /var/www/openideal_project/
 git clone https://github.com/SpringStorm5/openideal_project
 cd openideal_project
 touch composer.log
-/usr/local/bin/composer create-project istolar/openideal_project  /var/www/openideal_project/openideal_project/openideal_project/test2 --stability=dev &> composer.log
-cd test2
+/usr/local/bin/composer create-project istolar/openideal_project  /var/www/openideal_project/openideal_project/test2 --stability=dev &> composer.log
+cd /var/www/openideal_project/openideal_project/test2
 cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
 sudo docker-compose up -d
