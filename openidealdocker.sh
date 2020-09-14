@@ -35,6 +35,6 @@ composer require --dev drush/drush
 cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
 sudo chown -R vm:vm .
-sudo docker-compose up -d
-sleep 30
-sudo make &> make.log
+sudo docker-compose up -d && sleep 30 && sudo make 
+# sleep 60
+# sudo make &> make.log
