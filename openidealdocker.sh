@@ -36,4 +36,4 @@ cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
 sudo docker-compose up -d
 sleep 30
-make
+sudo make &> make.log
