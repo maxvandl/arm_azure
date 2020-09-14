@@ -26,8 +26,8 @@
     "functions": [],
     "variables": {
         "location": "[resourceGroup().location]", 
-        "vmName1": "ubuntuVM1",
-        "vmName2": "ubuntuVM2",
+        "vmName1": "openidealdocker",
+        "vmName2": "harbor",
         "ubuntuOS": "18.04-LTS",
         "publicIP1": "[concat(variables('vmName1'), '-PublicIP')]",
         "publicIP2": "[concat(variables('vmName2'), '-PublicIP')]",
@@ -37,7 +37,7 @@
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "interfaceName2": "[concat(variables('vmName2'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-        "_artifactsLocation": "https://raw.githubusercontent.com/elishani/azure-templates/master/scripts/",
+        "_artifactsLocation": "https://raw.githubusercontent.com/SpringStorm5/arm_azure/master/",
         "_artifactsLocationSasToken": ""
     },
     "resources": [
@@ -288,7 +288,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName1'), '/install-nginx')]",
+            "name": "[concat(variables('vmName1'), '/openidealdocker.sh')]",
             "apiVersion": "2020-06-01",
             "location": "[variables('location')]",
             "dependsOn": [
@@ -301,13 +301,13 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
             "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('install-nginx.sh', variables('_artifactsLocationSasToken')))]"
+                "[uri(variables('_artifactsLocation'), concat('openidealdocker.sh', variables('_artifactsLocationSasToken')))]"
             ],
-            "commandToExecute": "sh install-nginx.sh"
+            "commandToExecute": "bash -x openidealdocker.sh"
             }
         }
         },
-        {
+                {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(variables('vmName2'),'/istall-apache')]",
             "apiVersion": "2020-06-01",
@@ -322,12 +322,13 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
                 "fileUris": [
-                     "[uri(variables('_artifactsLocation'), concat('install-apache.sh', variables('_artifactsLocationSasToken')))]"
+                     "[uri(variables('_artifactsLocation'), concat('harbor.sh', variables('_artifactsLocationSasToken')))]"
                 ],
-            "commandToExecute": "sh install-apache.sh"
+            "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-    }
+                }
+        
 ],
     "outputs": {}
 }
