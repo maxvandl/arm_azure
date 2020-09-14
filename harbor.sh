@@ -2,11 +2,11 @@
 
 #Harbor on Ubuntu 18.04
 
-#Prompt for the user to ask if the install should use the IP Address or Fully Qualified Domain Name of the Harbor Server
-PS3='Would you like to install Harbor based on IP or FQDN? '
-select option in IP FQDN
-do
-    case $option in
+# #Prompt for the user to ask if the install should use the IP Address or Fully Qualified Domain Name of the Harbor Server
+# PS3='Would you like to install Harbor based on IP or FQDN? '
+# select option in IP FQDN
+# do
+    case $1 in
         IP)
             IPorFQDN=$(hostname -I|cut -d" " -f 1)
             break;;
@@ -14,7 +14,7 @@ do
             IPorFQDN=$(hostname -f)
             break;;
      esac
-done
+# done
 
 # Housekeeping
 apt update -y
