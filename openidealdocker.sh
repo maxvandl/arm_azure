@@ -39,7 +39,5 @@ sudo docker-compose up -d
 while timeout -k 70 60 sudo make &> make.log; [ $? = 124 ]
 do sleep 30  # Pause before retry
 done
-
-
-# sleep 60
-# sudo make &> make.log
+sleep 60
+sudo make &> make1.log
