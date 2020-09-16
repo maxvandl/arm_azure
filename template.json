@@ -37,7 +37,7 @@
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "interfaceName2": "[concat(variables('vmName2'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-        "_artifactsLocation": "https://raw.githubusercontent.com/SpringStorm5/arm_azure/master/",
+        "_artifactsLocation": "https://raw.githubusercontent.com/SpringStorm5/arm_azure/master/harbor.sh",
         "_artifactsLocationSasToken": ""
     },
     "resources": [
@@ -288,7 +288,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName1'), '/openidealdocker.sh')]",
+            "name": "[concat(variables('vmName1'), '/harbor.sh')]",
             "apiVersion": "2020-06-01",
             "location": "[variables('location')]",
             "dependsOn": [
@@ -301,34 +301,12 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
             "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('openidealdocker.sh', variables('_artifactsLocationSasToken')))]"
+                "[uri(variables('_artifactsLocation'), concat('harbor.sh', variables('_artifactsLocationSasToken')))]"
             ],
-            "commandToExecute": "bash -x openidealdocker.sh"
-            }
-        }
-        },
-                {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName2'),'/harbor.sh')]",
-            "apiVersion": "2020-06-01",
-            "location": "[variables('location')]",
-            "dependsOn": [
-                 "[resourceId('Microsoft.Compute/virtualMachines/',variables('vmName2'))]"
-            ],
-            "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.0",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-                "fileUris": [
-                     "[uri(variables('_artifactsLocation'), concat('harbor.sh', variables('_artifactsLocationSasToken')))]"
-                ],
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-                }
-        
+        }        
 ],
     "outputs": {}
 }
