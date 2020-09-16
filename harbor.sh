@@ -61,12 +61,12 @@ curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep brow
 tar xvf harbor-online-installer-v$HARBORVERSION.tgz
 cd harbor
 cp harbor.yml.tmpl harbor.yml
-sed -i "s/reg.mydomain.com/$IPorFQDN/g" ~/harbor/harbor.yml
-sed -e '/port: 443$/ s/^#*/#/' -i ~/harbor/harbor.yml
-sed -e '/https:$/ s/^#*/#/' -i ~/harbor/harbor.yml
-sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i ~/harbor/harbor.yml
-sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i ~/harbor/harbor.yml
 sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
+sed -e '/port: 443$/ s/^#*/#/' -i harbor.yml
+sed -e '/https:$/ s/^#*/#/' -i harbor.yml
+sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i harbor.yml
+sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i harbor.yml
 ./install.sh --with-clair --with-chartmuseum
+docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"
 
