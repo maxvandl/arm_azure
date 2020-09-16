@@ -1,10 +1,10 @@
 #!/bin/bash
 apt-get -y update
+whoami
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt-get -y update
-sudo apt-get -y install  python-dev libffi-dev  gcc libc-dev 
-sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get -y install  python-dev libffi-dev  gcc libc-dev apt-transport-https ca-certificates curl software-properties-common
 sudo apt-get -y install make
 sudo apt-get -y install make-guile
 sudo apt-get -y install build-essential
@@ -34,10 +34,8 @@ cd /var/www/openideal_project/openideal_project/test2
 composer require --dev drush/drush
 cp /var/www/openideal_project/openideal_project/Makefile .
 cp /var/www/openideal_project/openideal_project/docker-compose.yml .
-sudo chown -R vm:vm .
+#sudo chown -R vm:vm .
 sudo docker-compose up -d 
-while timeout -k 70 60 sudo make &> make.log; [ $? = 124 ]
-do sleep 30  # Pause before retry
-done
+sudo docker ps
 sleep 60
 sudo make &> make1.log
