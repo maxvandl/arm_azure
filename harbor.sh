@@ -17,6 +17,8 @@
 # done
 
 # Housekeeping
+mkdir -p /var/www/harbor
+cd /var/www/harbor/
 apt update -y
 swapoff --all
 sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
