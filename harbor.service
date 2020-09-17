@@ -9,7 +9,7 @@ Restart=always
 # Consider creating a dedicated user for Wiki.js here:
 #User=nobody
 #Environment=NODE_ENV=production
-WorkingDirectory=/var/lib/waagent/custom-script/download/0/harbor
+WorkingDirectory=/var/www/harbor/
 
 [Install]
 WantedBy=multi-user.target
