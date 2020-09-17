@@ -17,8 +17,13 @@
 # done
 
 # Housekeeping
-mkdir -p /var/www/harbor
-cd /var/www/harbor/
+mkdir -p /var/www/
+cd /var/www/
+apt-get install -y git
+git clone https://github.com/SpringStorm5/arm_azure/
+cp ./arm_azure/harbor.service /etc/systemd/system/harbor.service
+systemctl daemon-reload
+systemctl enable harbor.service
 apt update -y
 swapoff --all
 sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
