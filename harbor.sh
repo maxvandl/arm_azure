@@ -23,8 +23,8 @@ apt-get install -y git
 git clone https://github.com/SpringStorm5/arm_azure/
 cp ./arm_azure/harbor.service /etc/systemd/system/harbor.service
 mkdir -p /opt/linnovate
-cp ./post.sh /opt/linnovate/post.sh
-cp ./linnovate.service /etc/systemd/system/linnovate.service
+cp ./arm_azure/post.sh /opt/linnovate/post.sh
+cp ./arm_azure/linnovate.service /etc/systemd/system/linnovate.service
 systemctl daemon-reload
 systemctl enable harbor.service
 systemctl enable linnovate.service
