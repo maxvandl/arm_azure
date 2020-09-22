@@ -84,6 +84,7 @@ echo subjectAltName = IP:"$(hostname --ip-address)" > extfile.cnf
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 3650 -out ca.crt -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${FQDN}.key -out ${FQDN}.csr -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out ${FQDN}.crt
+cd /var/www/harbor/
 cp ../arm_azure/harbor.yml harbor.yml
 cp ../arm_azure/prepare ./prepare
 #cp harbor.yml.tmpl harbor.yml
