@@ -67,17 +67,29 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 echo "Docker Compose Installation done"
 
+# Create Self-Signed OpenSSL Certs
+mkdir -p /var/www/harbor/data/secret/cert
+cd /var/www/harbor/data/secret/cert
+FQDN=$(hostname -I|cut -d" " -f 1)
+echo subjectAltName = IP:"$(hostname --ip-address)" > extfile.cnf
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 3650 -out ca.crt -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${FQDN}.key -out ${FQDN}.csr -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
+openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out ${FQDN}.crt
+
+
 #Install Latest Stable Harbor Release
 HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
 curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
 tar xvf harbor-online-installer-v$HARBORVERSION.tgz
 cd harbor
-cp harbor.yml.tmpl harbor.yml
-sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
-sed -e '/port: 443$/ s/^#*/#/' -i harbor.yml
-sed -e '/https:$/ s/^#*/#/' -i harbor.yml
-sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i harbor.yml
-sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i harbor.yml
+cp ../arm_azure/harbor.yml harbor.yml
+cp ../arm_azure/prepare ./prepare
+#cp harbor.yml.tmpl harbor.yml
+# sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
+# sed -e '/port: 443$/ s/^#*/#/' -i harbor.yml
+# sed -e '/https:$/ s/^#*/#/' -i harbor.yml
+#sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i harbor.yml
+#sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i harbor.yml
 ./install.sh --with-clair --with-chartmuseum
 docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"
