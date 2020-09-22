@@ -67,6 +67,14 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 echo "Docker Compose Installation done"
 
+
+
+#Install Latest Stable Harbor Release
+cd /var/www/
+HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
+curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
+tar xvf harbor-online-installer-v$HARBORVERSION.tgz
+cd harbor
 # Create Self-Signed OpenSSL Certs
 cd /var/www/harbor/
 mkdir -p ./data/secret/cert
@@ -76,14 +84,6 @@ echo subjectAltName = IP:"$(hostname --ip-address)" > extfile.cnf
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 3650 -out ca.crt -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${FQDN}.key -out ${FQDN}.csr -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out ${FQDN}.crt
-
-
-#Install Latest Stable Harbor Release
-cd /var/www/
-HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
-curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
-tar xvf harbor-online-installer-v$HARBORVERSION.tgz
-cd harbor
 cp ../arm_azure/harbor.yml harbor.yml
 cp ../arm_azure/prepare ./prepare
 #cp harbor.yml.tmpl harbor.yml
