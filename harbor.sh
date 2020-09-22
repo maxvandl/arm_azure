@@ -68,7 +68,8 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 echo "Docker Compose Installation done"
 
 # Create Self-Signed OpenSSL Certs
-mkdir -p /var/www/harbor/data/secret/cert
+cd /var/www/harbor/
+mkdir -p ./data/secret/cert
 cd /var/www/harbor/data/secret/cert
 FQDN=$(hostname -I|cut -d" " -f 1)
 echo subjectAltName = IP:"$(hostname --ip-address)" > extfile.cnf
@@ -78,6 +79,7 @@ openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreates
 
 
 #Install Latest Stable Harbor Release
+cd /var/www/
 HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
 curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
 tar xvf harbor-online-installer-v$HARBORVERSION.tgz
