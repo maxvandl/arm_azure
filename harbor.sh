@@ -93,6 +93,8 @@ cp ../arm_azure/prepare ./prepare
 # sed -e '/https:$/ s/^#*/#/' -i harbor.yml
 #sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i harbor.yml
 #sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i harbor.yml
+PASS=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+sed -i "s/.*harbor_admin_password: Harbor12345*/harbor_admin_password: $PASS/" harbor.yml
 ./install.sh --with-clair --with-chartmuseum
 docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"
