@@ -4,7 +4,7 @@ Description = Linnovate Initialization Service
 After       = syslog.target
 
 [Service]
-Environment = SOFTWARE=Linnovate-Azure-Harbor
+Environment = SOFTWARE=Linnovate-AWS-Harbor
 ExecStart   = /opt/linnovate/post.sh $SOFTWARE
 
 [Install]
