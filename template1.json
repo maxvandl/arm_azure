@@ -163,6 +163,11 @@
             "tags": {
                 "displayName": "[variables('vmName1')]"
             },
+             "plan": {
+                "name": "linnovate-ubuntu18-supported",
+                "publisher": "meanio",
+                "product": "linnovate-open-source-sla-pro"
+            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_A2_v2"
@@ -174,10 +179,10 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "Canonical",
-                        "offer": "UbuntuServer",
-                        "sku": "[variables('ubuntuOS')]",
-                        "version": "latest"
+                        "publisher": "meanio",
+                        "offer": "linnovate-open-source-sla-pro",
+                        "sku": "linnovate-ubuntu-18-supported",
+                        "version": "2.0.0"
                     },
                     "osDisk": {
                         "name": "[concat(variables('vmName1'), '-OSDisk')]",
@@ -200,6 +205,7 @@
                 }
             }
         },
+
 
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -225,4 +231,3 @@
 ],
     "outputs": {}
 }
-
