@@ -1,0 +1,12 @@
+    - name: copy systemd unit
+      template: src="harbor.sh" dest="/tmp/harbor.sh"
+
+    # - name: install wikijs
+    #   shell: curl -sSo- https://wiki.js.org/install.sh | bash
+    #   args:
+    #     chdir: "{{ wikijs_dir }}"      
+
+    - name: start script for harbor install
+      command: bash -x harbor.sh IP
+      args:
+        chdir: "/tmp/"

@@ -1,0 +1,12 @@
+# This variable is sent to the server so we can run the proper installation
+env SOFTWARE={{ software_name }}
+
+env SCRIPT_FILE=/opt/linnovate/post.sh
+
+start on runlevel [23]
+stop on shutdown
+script
+  exec bash $SCRIPT_FILE $SOFTWARE> /dev/null 2>&1
+end script
+post-start script
+end script

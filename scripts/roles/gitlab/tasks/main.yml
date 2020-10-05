@@ -1,0 +1,20 @@
+    - name: Add GitLab's repos - Download script
+      get_url: 
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+        dest: /tmp/script.deb.sh
+        mode: 0750
+
+    - name: Add GitLab's repos - Run script
+      shell: bash /tmp/script.deb.sh
+
+    - name: Install all the basic packages needed to run GitLab
+      apt:
+        name: "{{ item }}"
+      with_items: 
+        - openssh-server
+        - ca-certificates
+        - postfix
+        - gitlab-ee
+
+    - name: Gitlab wasn't started on its own - force it to started
+      command: gitlab-ctl reconfigure

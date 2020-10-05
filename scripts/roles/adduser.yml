@@ -1,0 +1,9 @@
+ 
+---
+
+- hosts: Openideal
+  become: yes
+  vars:
+    linnovate_dir: /opt/linnovate
+  roles:
+    - adduser

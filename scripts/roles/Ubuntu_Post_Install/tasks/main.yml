@@ -1,0 +1,55 @@
+    - name: 
+      fail:
+        msg: "Please set software_name properly in the format: SOFTWARE-CLOUD-PLAN (e.g. OpenideaL-AWS-SUPPORTED)"
+      when: software_name == 'CHANGE ME' or software_name == 'CHANGE ME'
+      tags: try
+
+    - name: Create post.sh
+      template:
+        src: templates/post.sh.j2
+        dest: "{{ linnovate_dir }}/post.sh"
+        owner: root
+        mode: 0755
+
+    - name: Create upstart service on Ubuntu 14
+      template:
+        src: templates/linnovate-service.conf.j2
+        dest: /etc/init/linnovate-service.conf
+        owner: root
+        mode: 0644
+      when: ansible_distribution_major_version == "14"
+
+    - name: Create systemd service on Ubuntu 16 and Ubuntu 18
+      template:
+        src: templates/linnovate.service.j2
+        dest: /etc/systemd/system/linnovate.service
+        owner: root
+        mode: 0644
+      when: ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18" or ansible_distribution_major_version == "19"
+
+    # - name: Enable service on Ubuntu 16 and Ubuntu 18
+    #   systemd:
+    #     name: linnovate
+    #     enabled: yes
+    #   when: ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"
+   
+    - name: Remove history files
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /root/.bash_history
+        - /root/.mysql_history
+
+    # #Problem - we can't login to the machine after the following task:
+    # - name: Empty authorized_keys files
+    #   authorized_key:
+    #     user: "{{ item }}"
+    #     key: ''
+    #     state: present
+    #     exclusive: True
+    #   with_items:
+    #     - root
+    #   #  - ubuntu
+    #   when: azure_machine_init
+ 

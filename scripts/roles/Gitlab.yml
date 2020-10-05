@@ -1,0 +1,11 @@
+---
+
+- hosts: gitlab 
+  become: yes
+  vars:
+    hosts: gitlab
+    #flavor: ubuntu # available options: ubuntu, drupal, meanio, gitlab
+    #software_name: AWS-Gitlab
+    #linnovate_dir: /opt/linnovate
+  roles:
+    - gitlab  

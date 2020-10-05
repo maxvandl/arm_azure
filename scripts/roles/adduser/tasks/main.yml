@@ -1,0 +1,20 @@
+    - name: Create adduser.sh
+      template:
+        src: templates/adduser.sh.j2
+        dest: "{{ linnovate_dir }}/adduser.sh"
+        owner: root
+        mode: 0755
+
+    - name: Create systemd service on Ubuntu 16 and Ubuntu 18
+      template:
+        src: templates/adduser.service.j2
+        dest: /etc/systemd/system/adduser.service
+        owner: root
+        mode: 0644
+      when: ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"
+
+    - name: Enable service on Ubuntu 16 and Ubuntu 18
+      systemd:
+        name: adduser
+        enabled: yes
+      when: ansible_distribution_major_version == "16" or ansible_distribution_major_version == "18"

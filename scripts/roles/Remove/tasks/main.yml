@@ -1,0 +1,8 @@
+    # - name: update ssh config for azure
+    #   shell: sed -i 's/ClientAliveInterval 120/ClientAliveInterval 180/g' /etc/ssh/sshd_config
+
+    # - name: remove root history
+    #   shell: rm -f /root/.*history 
+
+    - name: remove azure users
+      shell: waagent -deprovision+user 

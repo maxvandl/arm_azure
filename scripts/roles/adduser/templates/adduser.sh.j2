@@ -1,0 +1,13 @@
+#!/bin/bash
+#!/usr/bin/env drush
+
+WORKDIR=/var/www/openideal/sites/default
+export WORKDIR
+cd $WORKDIR
+RESULT=$(openssl rand -base64 12 )
+MAIL=admin15@gmail.com
+USERNAME=admin15
+pwd
+drush user-create $USERNAME --mail="$MAIL" --password="$RESULT"
+drush user-add-role administrator $MAIL
+echo admin login is $USERNAME and password is $RESULT > /var/www/openideal/sites/default/pass.txt

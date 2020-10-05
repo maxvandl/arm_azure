@@ -1,0 +1,12 @@
+[Unit]
+Description = Adduser for drupal with random pass
+After       = mysql.service
+Requires    = mysql.service
+
+[Service]
+Environment = WORKDIR=/var/www/openideal/sites/default
+ExecStart   = /bin/bash '/opt/linnovate/adduser.sh'
+
+[Install]
+WantedBy=multi-user.target
+~                                         

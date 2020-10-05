@@ -1,0 +1,12 @@
+git clone https://github.com/getredash/redash.git
+cd redash
+sudo docker-compose -f docker-compose.yml up postgres
+sudo docker-compose -f docker-compose.yml up
+sudo docker-compose build server
+sudo docker-compose run --rm server create_db
+sudo  docker-compose run --rm postgres psql -h postgres -U postgres -c "create database tests"
+pip install -r requirements.txt -r requirements_dev.txt ( change version pytest)
+and sudo 
+npm install
+npm run build
+sudo docker-compose -f docker-compose.yml up -d

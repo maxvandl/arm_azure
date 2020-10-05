@@ -1,0 +1,5 @@
+    - name: vm deallocate
+      shell: az vm deallocate --resource-group vm-images-lab --name {{vm_name}}
+
+    - name: vm generalize
+      shell: az vm generalize --resource-group vm-images-lab --name {{vm_name}}

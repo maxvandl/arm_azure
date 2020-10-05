@@ -1,0 +1,15 @@
+ 
+---
+
+- hosts: ubuntu
+  become: yes
+  vars:
+    #hosts: matomo
+    #flavor: ubuntu # available options: ubuntu, drupal, meanio, gitlab
+    #software_name: Linnovate-Azure-Ubuntu
+    linnovate_dir: /opt/linnovate
+  roles:
+     - ubuntu
+     - Ubuntu_Post_Install 
+    #- Remove
+
