@@ -2,30 +2,29 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-    "storageSufix": {
-    "type": "string",
-    "defaultValue": "[resourceGroup().name]",
-    "metadata": {
-        "description": "Sufix to storageAccount."
+        "storageSufix": {
+            "defaultValue": "[resourceGroup().name]",
+            "type": "String",
+            "metadata": {
+                "description": "Sufix to storageAccount."
             }
-    },
-    "adminUsername": {
-      "type": "string",
-      "defaultValue": "vm",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
+        },
+        "adminUsername": {
+            "defaultValue": "vm",
+            "type": "String",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
             }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine."
+        },
+        "adminPassword": {
+            "type": "SecureString",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
             }
         }
     },
-    "functions": [],
     "variables": {
-        "location": "[resourceGroup().location]", 
+        "location": "[resourceGroup().location]",
         "vmName1": "openidealdocker",
         "vmName2": "harbor",
         "ubuntuOS": "18.04-LTS",
@@ -40,11 +39,12 @@
         "_artifactsLocation": "https://raw.githubusercontent.com/SpringStorm5/arm_azure/master/",
         "_artifactsLocationSasToken": ""
     },
+    "functions": [],
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('storageName')]",
             "apiVersion": "2019-06-01",
+            "name": "[variables('storageName')]",
             "location": "[variables('location')]",
             "tags": {
                 "displayName": "[concat(variables('vmName1'),' Storage Account')]"
@@ -54,10 +54,10 @@
             },
             "kind": "Storage"
         },
-        {   
+        {
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables('publicIP1')]",
             "apiVersion": "2019-11-01",
+            "name": "[variables('publicIP1')]",
             "location": "[variables('location')]",
             "tags": {
                 "displayName": "PublicIPAddress"
@@ -66,11 +66,10 @@
                 "publicIPAllocationMethod": "Dynamic"
             }
         },
-
         {
-            "name": "[variables('nsgName')]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2018-08-01",
+            "name": "[variables('nsgName')]",
             "location": "[variables('location')]",
             "properties": {
                 "securityRules": [
@@ -80,7 +79,11 @@
                             "description": "description",
                             "protocol": "Tcp",
                             "sourcePortRange": "*",
-                            "destinationPortRanges": ["22", "80", "443"],
+                            "destinationPortRanges": [
+                                "22",
+                                "80",
+                                "443"
+                            ],
                             "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
@@ -93,8 +96,8 @@
         },
         {
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "[variables('VirtualNetworkName')]", 
             "apiVersion": "2019-11-01",
+            "name": "[variables('VirtualNetworkName')]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
@@ -123,8 +126,8 @@
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[variables('interfaceName1')]",
             "apiVersion": "2019-11-01",
+            "name": "[variables('interfaceName1')]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIP1'))]",
@@ -150,23 +153,16 @@
                 ]
             }
         },
-        {    
-
-        
+        {
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[variables('vmName1')]",
             "apiVersion": "2019-07-01",
+            "name": "[variables('vmName1')]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('interfaceName1'))]"
             ],
             "tags": {
                 "displayName": "[variables('vmName1')]"
-            },
-             "plan": {
-                "name": "linnovate-ubuntu18-supported",
-                "publisher": "meanio",
-                "product": "linnovate-open-source-sla-pro"
             },
             "properties": {
                 "hardwareProfile": {
@@ -179,10 +175,10 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "meanio",
-                        "offer": "linnovate-open-source-sla-pro",
-                        "sku": "linnovate-ubuntu-18-supported",
-                        "version": "2.0.0"
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
                     },
                     "osDisk": {
                         "name": "[concat(variables('vmName1'), '-OSDisk')]",
@@ -205,29 +201,27 @@
                 }
             }
         },
-
-
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName1'), '/harbor.sh')]",
             "apiVersion": "2020-06-01",
+            "name": "[concat(variables('vmName1'), '/harbor.sh')]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/',variables('vmName1'))]"
             ],
             "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.0",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-            "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('ansible.sh', variables('_artifactsLocationSasToken')))]"
-            ],
-            "commandToExecute": "bash -x ansible.sh"
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[uri(variables('_artifactsLocation'), concat('ansible.sh', variables('_artifactsLocationSasToken')))]"
+                    ],
+                    "commandToExecute": "bash -x ansible.sh"
+                }
             }
         }
-        }        
-],
+    ],
     "outputs": {}
 }
