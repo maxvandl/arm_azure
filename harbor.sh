@@ -40,7 +40,7 @@ apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 apt-get update -y
-apt-get install -y docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce 
 tee /etc/docker/daemon.json >/dev/null <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -55,6 +55,8 @@ EOF
 mkdir -p /etc/systemd/system/docker.service.d
 groupadd docker
 MAINUSER=$(logname)
+sudo usermod -aG docker ${USER}
+su - ${USER}
 usermod -aG docker $MAINUSER
 systemctl daemon-reload
 systemctl restart docker
@@ -93,8 +95,8 @@ cp ../arm_azure/prepare ./prepare
 # sed -e '/https:$/ s/^#*/#/' -i harbor.yml
 #sed -e '/\/your\/certificate\/path$/ s/^#*/#/' -i harbor.yml
 #sed -e '/\/your\/private\/key\/path$/ s/^#*/#/' -i harbor.yml
-PASS=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-sed -i "s/.*harbor_admin_password: Harbor12345*/harbor_admin_password: $PASS/" harbor.yml
+# PASS=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+# sed -i "s/.*harbor_admin_password: Harbor12345*/harbor_admin_password: $PASS/" harbor.yml
 ./install.sh --with-clair --with-chartmuseum
 docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"
