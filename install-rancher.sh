@@ -1,24 +1,46 @@
 #!/bin/bash
 
 info_file=infomation_on_$0.txt
-
 echo "Parameters list: $@" > $info_file
 apt-get update
 
 # Install doker engine
-sudo killall apt apt-get
+#sudo killall apt apt-get
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do 
+    sleep 5
+    echo "starting with installation"
+done
 sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-apt update && apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update 
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do 
+    sleep 5
+    echo "starting with installation"
+done
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-apt-get update && apt-get install -y apt-transport-https curl
+sudo apt-get update 
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do
+    sleep 5
+    echo "starting with installation"
+done
+sudo apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 cat <<EOF | tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
-apt-get update && apt-get install -y kubelet kubeadm kubectl
-apt-mark hold kubelet kubeadm kubectl
+sudo apt-get update 
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do
+    sleep 5
+    echo "starting with installation"
+done
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
 
 user=$1
 shift
