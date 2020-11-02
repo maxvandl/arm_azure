@@ -3,7 +3,7 @@
 info_file=infomation_on_$0.txt
 
 echo "Parameters list: $@" > $info_file
-
+sudo killall apt apt-get
 apt update
 
 # Install doker engine
