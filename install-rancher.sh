@@ -20,7 +20,7 @@ do
     sleep 5
     echo "starting with installation"
 done
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu  containerd.io
 
 sudo apt-get update 
 while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
