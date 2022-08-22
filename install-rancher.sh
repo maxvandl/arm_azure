@@ -165,10 +165,10 @@ cat $file_name | tee -a $info_file
 echo "********** END **********" | tee -a $info_file
 
 cd /usr/local/bin
-wget https://github.com/rancher/rke/releases/download/v1.2.0-rc15/rke_linux-amd64
-mv rke_linux-amd64 rke
-chmod +x rke
-rke --version
+sudo wget https://github.com/rancher/rke/releases/download/v1.2.0-rc15/rke_linux-amd64
+sudo mv rke_linux-amd64 rke
+sudo chmod +x rke
+sudo rke --version
 echo "$ssh_rsa" > $home/.ssh/id_rsa
 echo "$ssh_rsa_pub" > $home/.ssh/id_rsa.pub
 chown -R $owner $home/.ssh
